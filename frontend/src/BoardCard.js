@@ -7,6 +7,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography';
 
+import Slide from '@material-ui/core/Slide';
+
 const styles = theme => ({
 	paper: {	
 		margin: theme.spacing.unit,
@@ -27,19 +29,17 @@ function BoardCard(props) {
 	console.log(props.data);
 	return (
 		<Link style={{ color: "white", textDecoration: 'none' }} to={'/card/' + props.data.id}>
-		<Paper className={classes.paper}>
-			<Typography className={classes.howto} color="textSecondary">
-				How to
-			</Typography>
-			<Typography variant="headline" component="h2">
-				{props.data.title}
-			</Typography>
-			
-			{/*<Typography className={classes.author} color="textSecondary">
-				{props.data.author}
-			</Typography>*/}
+			<Slide direction="down" in={true} mountOnEnter unmountOnExit>
+			<Paper className={classes.paper}>
+				<Typography className={classes.howto} color="textSecondary">
+					How to
+				</Typography>
+				<Typography variant="headline" component="h2">
+					{props.data.title}
+					</Typography>
 				
-		</Paper>
+			</Paper>
+			</Slide>
 		</Link>
 	)
 }

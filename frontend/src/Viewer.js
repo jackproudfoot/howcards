@@ -3,10 +3,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
+import MediaQuery from 'react-responsive'
+
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography';
 
-import Card from './EditorCard';
+import ViewerCard from './ViewerCard';
+import ViewerEditButton from './ViewerEditButton'
 
 const styles = theme => ({
 	root: {
@@ -16,31 +19,46 @@ const styles = theme => ({
 	paper: {	
 		margin: theme.spacing.unit,
     	padding: theme.spacing.unit * 2
-	}
+	},
+	fab: {
+		position: 'fixed',
+		right: theme.spacing.unit * 2,
+		bottom: theme.spacing.unit * 2
+	},
 });
 
 class CardViewer extends Component {
-	state = {}
+	state = {
+		card: {}
+	}
 	
 	componentDidMount() {
 		fetch('/card/' + this.props.match.params.id)
 			.then(res => res.json())
-			.then(card => this.setState( card ));
+			.then(card => this.setState({ card: card }));
 	}
 	
 	render() {
+		
+		var editButton;
+		if (this.props.user.id === this.state.card.owner) {
+			editButton = 
+				<div className={this.props.classes.fab}>
+					<ViewerEditButton id={this.state.card.id}/>
+				</div>;
+		}
+		
 		console.log(this.state);
 		return (
 			<div className={this.props.classes.root}>
-				<Paper className={this.props.classes.paper}>
-					<Typography variant="headline" component="h1" color="textSecondary">
-						How to
-					</Typography>
-					<Typography variant="headline" component="h1">
-						{this.state.title}
-					</Typography>
-				</Paper>
-				<Card data={this.state} />
+				<MediaQuery minDeviceWidth={1224}>
+					<ViewerCard card={this.state.card} width={7}/>
+				</MediaQuery>
+				<MediaQuery maxDeviceWidth={1224}>
+					<ViewerCard card={this.state.card} width={12}/>
+				</MediaQuery>
+				
+				{editButton}
 			</div>
 		)
 	}

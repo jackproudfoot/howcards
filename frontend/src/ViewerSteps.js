@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid'
 
-import CardEditorStep from './CardEditorStep'
+import ViewerStep from './ViewerStep'
 
 const styles = theme => ({
 	root: {
@@ -20,17 +20,20 @@ const styles = theme => ({
 	},
 });
 
-class CardEditorSteps extends Component {
+class ViewerSteps extends Component {
 	state = { selected: 0 }
 	
 	render() {
 		var steps = [];
 		
-		if (this.props.steps !== undefined) {
-			for (var i = 0; i < this.props.steps.length; i++) {
+		if (this.props.card.steps !== undefined) {
+			for (var i = 0; i < this.props.card.steps.length; i++) {
 				steps.push(
 					<Grid item xs className={this.props.classes.grid} key={i}>
-						<CardEditorStep index={i+1} elevation={i === this.props.selected ? 1 : 0} selectCard={this.props.selectCard} step={this.props.steps[i]}/>
+						<ViewerStep 
+							index={i} 
+							card={this.props.card} 
+						/>
 					</Grid>
 				);
 			}
@@ -47,8 +50,8 @@ class CardEditorSteps extends Component {
 	}
 }
 
-CardEditorSteps.propTypes = {
+ViewerSteps.propTypes = {
 	classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(CardEditorSteps);
+export default withStyles(styles)(ViewerSteps);

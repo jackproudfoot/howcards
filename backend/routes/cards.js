@@ -6,9 +6,10 @@ router.get('/:id', function(req, res, next) {
   res.json(
 	  {
 		  id: req.params.id,
-		  author: "Jack",
-		  title: "Print",
-		  images: 0,
+		  owner: 1,
+		  title: "Print Test",
+		  description: "Registering your ID to print",
+		  images: 1,
 		  steps: [
 			  {
 				  title: "First Title",
