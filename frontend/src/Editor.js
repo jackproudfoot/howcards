@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-import MediaQuery from 'react-responsive'
+import { Route, Redirect } from 'react-router-dom'
 
-import Grid from '@material-ui/core/Grid';
+import ApprovalMessage from './ApprovalMessage'
 
 import EditorCard from './EditorCard';
 import EditorSaveButton from './EditorSaveButton'
@@ -28,27 +28,31 @@ class Editor extends Component {
 			id: this.props.match.params.id,
 			title: "",
 			description: "",
-		  	author: "",
+		  	owner: -1,
 		  	images: 0,
-		  	steps: []
+		  	steps: [],
+			approved: 1
 		},
 		selected: 0,
-		saved: true
+		saved: true,
+		fetched: false
 	};
 	
 	componentDidMount() {
 		fetch('/card/' + this.props.match.params.id)
 			.then(res => res.json())
-			.then(card => this.setState({ card: card }));
+			.then(card => this.setState({ card: card, fetched: true }));
 	}
 	
 	changeCard = (card) => {
+		card.approved = 2;
 		this.setState({ card: card, saved: false });
 	}
 	
 	addStep = () => {
 		var newCard = this.state.card;
 		newCard.steps.push({title: "", blocks: []})
+		newCard.approved = 2;
 		this.setState({ saved: false, card: newCard, selected: newCard.steps.length-1 });
 	}
 	
@@ -69,30 +73,41 @@ class Editor extends Component {
 	}
 	
 	render() {	
+		//If the user does not have permission to edit card redirect them to the home page
+		var redirect;
+		if (this.state.fetched && this.props.user === undefined) {
+			redirect = 
+			<Route exact path={"/edit/" + this.props.match.params.id} render={() => (
+				<Redirect to="/login" />
+			)} />;
+		}
+		else if (this.state.fetched && (this.props.user.id !== this.state.card.owner && this.props.user.moderator === false)) {
+			redirect = 
+			<Route exact path={"/edit/" + this.props.match.params.id} render={() => (
+				<Redirect to="/" />
+			)} />;
+		}
+		
+		var approvalMessage;
+		if (this.props.user !== undefined && (this.props.user.id === this.state.card.owner || this.props.user.moderator === true)) {
+			approvalMessage = <ApprovalMessage card={this.state.card} width={this.props.width}/>
+		}
+		
 		return (
 			<div className={this.props.classes.root}>
-				{/* Card Width for Computer */}
-				<MediaQuery minDeviceWidth={1224}>
-					<EditorCard 
-						card={this.state.card} 
-						width={7}
-						selected={this.state.selected} 
-						selectCard={this.selectCard}
-						changeCard={this.changeCard}
-						addStep={this.addStep}
-					/>
-				</MediaQuery>
-				{/* Card Width for Mobile */}
-				<MediaQuery maxDeviceWidth={1224}>
-					<EditorCard 
-						card={this.state.card} 
-						width={12}
-						selected={this.state.selected} 
-						selectCard={this.selectCard} 
-						changeCard={this.changeCard}
-						addStep={this.addStep}
-					/>
-				</MediaQuery>
+				{redirect}
+				
+				{approvalMessage}
+				
+				<EditorCard 
+					card={this.state.card} 
+					width={this.props.width}
+					selected={this.state.selected} 
+					selectCard={this.selectCard}
+					changeCard={this.changeCard}
+					addStep={this.addStep}
+				/>
+				
 				
 				<div className={this.props.classes.fab}>
 					<EditorSaveButton card={this.state.card} saved={this.state.saved} handleSave={this.save}/>

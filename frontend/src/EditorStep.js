@@ -34,6 +34,9 @@ const styles = theme => ({
 	paper: {	
 		margin: theme.spacing.unit,
     	padding: theme.spacing.unit * 2
+	},
+	arrows: {
+		marginRight: theme.spacing.unit * 2
 	}
 });
 
@@ -107,8 +110,10 @@ class EditorStep extends Component {
 						<Grid item xs key={i}>
 							<EditorTextBlock 
 								index={i} 
+								step={step}
 								content={step.blocks[i].content} 
 								changeText={this.changeTextBlock} 
+								changeStep={this.props.changeStep}
 								deleteBlock={this.deleteBlock}
 							/>
 						</Grid>
@@ -119,7 +124,9 @@ class EditorStep extends Component {
 						<Grid item xs key={i}>
 							<EditorImageBlock 
 								index={i} 
-								content={step.blocks[i].content} 
+								step={step}
+								content={step.blocks[i].content}
+								changeStep={this.props.changeStep}
 								deleteBlock={this.deleteBlock}
 							/>
 						</Grid>
@@ -143,17 +150,17 @@ class EditorStep extends Component {
 		var moveStepUp;
 		if (this.state.showDelete === 1) {
 			moveStepUp = <Tooltip title="Move Step Up" placement="left">
-							<IconButton className={this.props.classes.button} disabled={this.props.index === 0} aria-label="Move Step Up" onClick={this.moveStepUp}>
+							<div><IconButton className={this.props.classes.button} disabled={this.props.index === 0} aria-label="Move Step Up" onClick={this.moveStepUp}>
 								<UpArrowIcon />
-							</IconButton>
+							</IconButton></div>
 						</Tooltip>;
 		}
 		var moveStepDown;
 		if (this.state.showDelete === 1) {
 			moveStepDown = <Tooltip title="Move Step Down" placement="left">
-							<IconButton className={this.props.classes.button} disabled={this.props.index === this.props.card.steps.length-1} aria-label="Move Step Up" onClick={this.moveStepDown}>
+							<div><IconButton className={this.props.classes.button} disabled={this.props.index === this.props.card.steps.length-1} aria-label="Move Step Up" onClick={this.moveStepDown}>
 								<DownArrowIcon />
-							</IconButton>
+							</IconButton></div>
 						</Tooltip>;
 		}
 		
@@ -167,8 +174,8 @@ class EditorStep extends Component {
 			<Paper align='left' className={this.props.classes.paper} elevation={this.props.elevation} onMouseEnter={this.showDelete} onMouseLeave={this.hideDelete} onClick={e => this.props.selectCard(this.props.index, e)}>
 				<Grid container spacing={0}>
 
-					<Grid item xs={1}>
-						<Grid direction="column" container spacing={0}>
+					<Grid className={this.props.classes.arrows} item xs={1}>
+						<Grid direction="column" container spacing={8}>
 							<Grid item xs>
 								{moveStepUp}
 							</Grid>

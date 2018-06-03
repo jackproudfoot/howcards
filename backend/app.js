@@ -9,6 +9,8 @@ var fileUpload = require('express-fileupload');
 var indexRouter = require('./routes/index');
 var cardRouter = require('./routes/cards');
 var deckRouter = require('./routes/decks');
+var userRouter = require('./routes/users');
+var newRouter = require('./routes/new')
 
 var app = express();
 
@@ -24,6 +26,8 @@ app.use('/', indexRouter);
 app.use('/board', indexRouter)
 app.use('/card', cardRouter);
 app.use('/deck', deckRouter);
+app.use('/user', userRouter);
+app.use('/new', newRouter);
 
 //Handles uploading images for the how cards
 app.post('/upload', (req, res, next) => {
@@ -46,6 +50,7 @@ app.post('/upload', (req, res, next) => {
 		}
 	});
 });
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

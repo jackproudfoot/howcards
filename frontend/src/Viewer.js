@@ -3,13 +3,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-import MediaQuery from 'react-responsive'
-
-import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography';
-
+import ApprovalMessage from './ApprovalMessage'
 import ViewerCard from './ViewerCard';
 import ViewerEditButton from './ViewerEditButton'
+
 
 const styles = theme => ({
 	root: {
@@ -24,12 +21,14 @@ const styles = theme => ({
 		position: 'fixed',
 		right: theme.spacing.unit * 2,
 		bottom: theme.spacing.unit * 2
-	},
+	}
 });
 
-class CardViewer extends Component {
+class Viewer extends Component {
 	state = {
-		card: {}
+		card: {
+			approved: 1
+		}
 	}
 	
 	componentDidMount() {
@@ -41,22 +40,24 @@ class CardViewer extends Component {
 	render() {
 		
 		var editButton;
-		if (this.props.user.id === this.state.card.owner) {
+		if (this.props.user !== undefined && (this.props.user.id === this.state.card.owner || this.props.user.moderator === true)) {
 			editButton = 
 				<div className={this.props.classes.fab}>
 					<ViewerEditButton id={this.state.card.id}/>
 				</div>;
 		}
 		
-		console.log(this.state);
+		
+		var approvalMessage;
+		if (this.props.user !== undefined && (this.props.user.id === this.state.card.owner || this.props.user.moderator === true)) {
+			approvalMessage = <ApprovalMessage card={this.state.card} width={this.props.width}/>
+		}
+		
 		return (
 			<div className={this.props.classes.root}>
-				<MediaQuery minDeviceWidth={1224}>
-					<ViewerCard card={this.state.card} width={7}/>
-				</MediaQuery>
-				<MediaQuery maxDeviceWidth={1224}>
-					<ViewerCard card={this.state.card} width={12}/>
-				</MediaQuery>
+				{approvalMessage}
+			
+				<ViewerCard card={this.state.card} width={this.props.width}/>
 				
 				{editButton}
 			</div>
@@ -64,8 +65,8 @@ class CardViewer extends Component {
 	}
 }
 
-CardViewer.propTypes = {
+Viewer.propTypes = {
 	classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(CardViewer);
+export default withStyles(styles)(Viewer);

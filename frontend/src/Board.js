@@ -16,42 +16,36 @@ const styles = {
 }
 
 class Board extends Component {
-	state = {cards: []}
-	
-	componentDidMount() {
-  	  	fetch('/board')
-        .then(res => res.json())
-        .then(cards => this.setState({ cards }));
-	}
-	
 	render() {
-	
+		
+		if (this.props.cards === undefined) return null;
+		
 		/* THERE IS PROBABLY A BETTER WAY TO DO THIS */
 	
 		//Divide the cards into rows of three
 		var rows = [];
-		for (var i = 0; i < this.state.cards.length/3; i++) {
-			if (this.state.cards[i*3+2] !== undefined) {
+		for (var i = 0; i < this.props.cards.length/3; i++) {
+			if (this.props.cards[i*3+2] !== undefined) {
 				rows.push(
-					<Grid container spacing={16}>
-						<Grid item xs><BoardCard data={this.state.cards[i*3]} /></Grid>
-						<Grid item xs><BoardCard data={this.state.cards[i*3+1]} /></Grid>
-						<Grid item xs><BoardCard data={this.state.cards[i*3+2]} /></Grid>
+					<Grid container spacing={16} key={i}>
+						<Grid item xs><BoardCard data={this.props.cards[i*3]} /></Grid>
+						<Grid item xs><BoardCard data={this.props.cards[i*3+1]} /></Grid>
+						<Grid item xs><BoardCard data={this.props.cards[i*3+2]} /></Grid>
 					</Grid>
 				);
 			}
-			else if (this.state.cards[i*3+1] !== undefined) {
+			else if (this.props.cards[i*3+1] !== undefined) {
 				rows.push(
-					<Grid container spacing={16}>
-						<Grid item xs><BoardCard data={this.state.cards[i*3]} /></Grid>
-						<Grid item xs><BoardCard data={this.state.cards[i*3+1]} /></Grid>
+					<Grid container spacing={16} key={i}>
+						<Grid item xs><BoardCard data={this.props.cards[i*3]} /></Grid>
+						<Grid item xs><BoardCard data={this.props.cards[i*3+1]} /></Grid>
 					</Grid>
 				);
 			}
 			else /*if (props.cards[i*3] != undefined)*/ {
 				rows.push(
-					<Grid container spacing={16}>
-						<Grid item xs><BoardCard data={this.state.cards[i*3]} /></Grid>
+					<Grid container spacing={16} key={i}>
+						<Grid item xs><BoardCard data={this.props.cards[i*3]} /></Grid>
 					</Grid>
 				);
 			}

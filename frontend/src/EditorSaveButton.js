@@ -60,7 +60,6 @@ class EditorSaveButton extends Component {
 	}
 	
 	render() {
-		console.log(this.state.loading)
 		const buttonClassname = classNames({
 			[this.props.classes.buttonSuccess]: this.props.saved
 		})

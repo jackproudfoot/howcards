@@ -26,7 +26,6 @@ const styles = theme => ({
 
 function BoardCard(props) {
 	const { classes } = props;
-	console.log(props.data);
 	return (
 		<Link style={{ color: "white", textDecoration: 'none' }} to={'/card/' + props.data.id}>
 			<Slide direction="down" in={true} mountOnEnter unmountOnExit>

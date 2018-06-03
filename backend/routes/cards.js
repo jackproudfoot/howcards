@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
+/* GET card listing. */
+
 router.get('/:id', function(req, res, next) {
   res.json(
 	  {
@@ -34,7 +35,10 @@ router.get('/:id', function(req, res, next) {
 					  {type: 'text', content: "Here is some more text"}
 				  ]
 			  }
-		  ]
+		  ],
+		  approved: 1,
+		  approvalMessage: "This card has not been approved",
+		  approvalBy: 1
 	  }
   );
 });

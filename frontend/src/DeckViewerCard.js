@@ -23,7 +23,7 @@ const styles = theme => ({
 	},
 });
 
-class ViewerCard extends Component {
+class DeckViewerCard extends Component {
 	
 	render() {
 		
@@ -54,8 +54,8 @@ class ViewerCard extends Component {
 	}
 }
 
-ViewerCard.propTypes = {
+DeckViewerCard.propTypes = {
 	classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(ViewerCard);
+export default withStyles(styles)(DeckViewerCard);

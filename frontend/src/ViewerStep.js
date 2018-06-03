@@ -8,18 +8,10 @@ import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import Divider from '@material-ui/core/Divider'
 
-import TextField from '@material-ui/core/TextField'
-
 import Typography from '@material-ui/core/Typography'
 
 import ViewerTextBlock from './ViewerTextBlock'
 import ViewerImageBlock from './ViewerImageBlock'
-
-import EditorStepActions from './EditorStepActions'
-
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip'
-import ClearIcon from '@material-ui/icons/Clear'
 
 const styles = theme => ({
 	root: {
@@ -72,6 +64,10 @@ class ViewerStep extends Component {
 			}
 		} 
 		
+		//Don't show step divider if it's last step
+		var divider;
+		if (this.props.index !== step.blocks.length) divider = <Divider className={this.props.classes.divider}/>;
+		
 		return (
 			<Paper align='left' className={this.props.classes.paper} elevation={0}>
 				<Grid container spacing={0}>
@@ -94,7 +90,7 @@ class ViewerStep extends Component {
 					{blocks}
 				</Grid>
 					
-				<Divider className={this.props.classes.divider}/>
+				{divider}
 				
 			</Paper>
 		)
