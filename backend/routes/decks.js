@@ -1,7 +1,23 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET decks . */
+router.get('/all', function(req, res, next) {
+	res.json([
+		{
+			id: 1,
+			title: "First Deck"
+		},
+		{
+			id: 2,
+			title: "Second Deck"
+		},
+		{
+			id: 3,
+			title: "Third Deck"
+		},
+	])
+});
+
 router.get('/:id', function(req, res, next) {
     res.json(
 		{

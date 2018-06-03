@@ -5,7 +5,8 @@ import MediaQuery from 'react-responsive'
 
 import Home from './Home';
 import User from './User'
-import Deck from './Deck'
+import DeckViewer from './DeckViewer'
+import Decks from './Decks'
 import Viewer from './Viewer';
 import Editor from './Editor';
 import NewCard from './NewCard';
@@ -18,6 +19,7 @@ class Main extends Component {
 				<Switch>
 					<Route exact path='/' render={(props) => <Home {...props} user={this.props.user}/>} />
 					<Route exact path='/cards' render={(props) => <Home {...props} user={this.props.user}/>} />
+					<Route exact path='/decks' render={(props) => <Decks {...props} user={this.props.user}/>} />
 					<Route path='/new/card' render={(props) => <NewCard {...props} user={this.props.user} />} />
 					<Route path='/card/:id' render={(props) => (
 						<div>
@@ -34,10 +36,10 @@ class Main extends Component {
 					<Route path='/deck/:id' render={(props) => (
 						<div>
 							<MediaQuery minDeviceWidth={1224}>
-								<Deck {...props} user={this.props.user} width={7}/>
+								<DeckViewer {...props} user={this.props.user} width={7}/>
 							</MediaQuery>
 							<MediaQuery maxDeviceWidth={1224}>
-								<Deck {...props} user={this.props.user} width={12}/>
+								<DeckViewer {...props} user={this.props.user} width={12}/>
 							</MediaQuery>
 						</div>
 						

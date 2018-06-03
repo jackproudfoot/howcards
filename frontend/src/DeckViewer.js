@@ -32,7 +32,7 @@ const styles = theme => ({
 	}
 });
 
-class Deck extends Component {
+class DeckViewer extends Component {
 	state = {
 		deck: {
 			id: this.props.match.params.id,
@@ -76,8 +76,8 @@ class Deck extends Component {
 		)
 	}
 }
-Deck.propTypes = {
+DeckViewer.propTypes = {
 	classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(Deck);
+export default withStyles(styles)(DeckViewer);

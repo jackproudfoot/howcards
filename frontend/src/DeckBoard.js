@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
 
-import BoardCard from './BoardCard';
+import DeckBoardCard from './DeckBoardCard';
 
 const styles = theme => ({
 	root: {
@@ -19,37 +19,37 @@ const styles = theme => ({
 	}
 });
 
-class Board extends Component {
+class DeckBoard extends Component {
 	render() {
 		
-		if (this.props.cards === undefined) return null;
+		if (this.props.decks === undefined) return null;
 		
 		/* THERE IS PROBABLY A BETTER WAY TO DO THIS */
 	
 		//Divide the cards into rows of three
 		var rows = [];
-		for (var i = 0; i < this.props.cards.length/3; i++) {
-			if (this.props.cards[i*3+2] !== undefined) {
+		for (var i = 0; i < this.props.decks.length/3; i++) {
+			if (this.props.decks[i*3+2] !== undefined) {
 				rows.push(
 					<Grid container spacing={16} key={i}>
-						<Grid item xs><BoardCard data={this.props.cards[i*3]} /></Grid>
-						<Grid item xs><BoardCard data={this.props.cards[i*3+1]} /></Grid>
-						<Grid item xs><BoardCard data={this.props.cards[i*3+2]} /></Grid>
+						<Grid item xs><DeckBoardCard data={this.props.decks[i*3]} /></Grid>
+						<Grid item xs><DeckBoardCard data={this.props.decks[i*3+1]} /></Grid>
+						<Grid item xs><DeckBoardCard data={this.props.decks[i*3+2]} /></Grid>
 					</Grid>
 				);
 			}
-			else if (this.props.cards[i*3+1] !== undefined) {
+			else if (this.props.decks[i*3+1] !== undefined) {
 				rows.push(
 					<Grid container spacing={16} key={i}>
-						<Grid item xs><BoardCard data={this.props.cards[i*3]} /></Grid>
-						<Grid item xs><BoardCard data={this.props.cards[i*3+1]} /></Grid>
+						<Grid item xs><DeckBoardCard data={this.props.decks[i*3]} /></Grid>
+						<Grid item xs><DeckBoardCard data={this.props.decks[i*3+1]} /></Grid>
 					</Grid>
 				);
 			}
-			else /*if (props.cards[i*3] != undefined)*/ {
+			else /*if (props.decks[i*3] != undefined)*/ {
 				rows.push(
 					<Grid container spacing={16} key={i}>
-						<Grid item xs><BoardCard data={this.props.cards[i*3]} /></Grid>
+						<Grid item xs><DeckBoardCard data={this.props.decks[i*3]} /></Grid>
 					</Grid>
 				);
 			}
@@ -70,8 +70,8 @@ class Board extends Component {
 	
 }
 
-Board.propTypes = {
+DeckBoard.propTypes = {
 	classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(Board);
+export default withStyles(styles)(DeckBoard);
