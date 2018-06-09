@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 
+import { Link } from 'react-router-dom'
+
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
 
 import DeckViewerCard from './DeckViewerCard';
+
+
+import EditButton from './EditButton'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -19,6 +24,11 @@ const styles = theme => ({
 	paper: {	
 		margin: theme.spacing.unit,
     	padding: theme.spacing.unit * 2
+	},
+	fab: {
+		position: 'fixed',
+		right: theme.spacing.unit * 2,
+		bottom: theme.spacing.unit * 2
 	},
 	title: {
 		marginTop: theme.spacing.unit * 4,
@@ -55,6 +65,16 @@ class DeckViewer extends Component {
 			cards.push(<DeckViewerCard card={this.state.deck.cards[0]} width={this.props.width} key={i}/>);
 		}
 		
+		var editButton;
+		if (this.props.user !== undefined && (this.props.user.id === this.state.deck.owner || this.props.user.moderator === true)) {
+			editButton = 
+				<div className={this.props.classes.fab}>
+					<Link style={{ color: "white", textDecoration: 'none' }} to={'/edit/d/' + this.state.deck.id}>
+						<EditButton />
+					</Link>
+				</div>;
+		}
+		
 		return (
 			<div className={this.props.classes.root}>
 				<Grid justify="center" container spacing={8}>
@@ -72,6 +92,7 @@ class DeckViewer extends Component {
 				
 			{cards}
 				
+			{editButton}
 			</div>
 		)
 	}

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -17,24 +16,22 @@ const styles = theme => ({
 	}
 })
 
-class ViewerEditButton extends Component {
+class EditButton extends Component {
 	render() {
 		return (
-			<Link style={{ color: "white", textDecoration: 'none' }} to={'/edit/' + this.props.id}>
-				<Tooltip placement="left" title="Edit">
+			<Tooltip placement="left" title="Edit">
 					<Zoom in={true}>
 						<Button variant="fab" color="primary" aria-label="Edit" className={this.props.classes.button}>
 							<EditIcon />
 						</Button>
 					</Zoom>
-				</Tooltip>
-			</Link>
+			</Tooltip>
 		)
 	}
 }
 
-ViewerEditButton.propTypes = {
+EditButton.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(ViewerEditButton);
+export default withStyles(styles)(EditButton);

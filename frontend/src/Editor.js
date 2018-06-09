@@ -61,6 +61,7 @@ class Editor extends Component {
 	}
 	
 	save = () => {
+		if(this.props.user === undefined) window.location='/card/'+this.state.card.id;
 		this.timer = setTimeout(() => {
 			this.setState({ saved: true });
 		}, 2000);
@@ -77,14 +78,14 @@ class Editor extends Component {
 		var redirect;
 		if (this.state.fetched && this.props.user === undefined) {
 			redirect = 
-			<Route exact path={"/edit/" + this.props.match.params.id} render={() => (
-				<Redirect to="/login" />
+			<Route exact path={"/edit/c/" + this.props.match.params.id} render={() => (
+				<Redirect to={"/card/" + this.props.match.params.id}/>
 			)} />;
 		}
 		else if (this.state.fetched && (this.props.user.id !== this.state.card.owner && this.props.user.moderator === false)) {
 			redirect = 
-			<Route exact path={"/edit/" + this.props.match.params.id} render={() => (
-				<Redirect to="/" />
+			<Route exact path={"/edit/c" + this.props.match.params.id} render={() => (
+				<Redirect to={"/card/" + this.props.match.params.id} />
 			)} />;
 		}
 		

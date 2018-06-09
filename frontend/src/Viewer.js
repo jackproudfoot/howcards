@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import ApprovalMessage from './ApprovalMessage'
 import ViewerCard from './ViewerCard';
-import ViewerEditButton from './ViewerEditButton'
+import EditButton from './EditButton'
 
 
 const styles = theme => ({
@@ -43,7 +44,9 @@ class Viewer extends Component {
 		if (this.props.user !== undefined && (this.props.user.id === this.state.card.owner || this.props.user.moderator === true)) {
 			editButton = 
 				<div className={this.props.classes.fab}>
-					<ViewerEditButton id={this.state.card.id}/>
+					<Link style={{ color: "white", textDecoration: 'none' }} to={'/edit/c/' + this.state.card.id}>
+						<EditButton id={this.state.card.id}/>
+					</Link>
 				</div>;
 		}
 		

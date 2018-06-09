@@ -16,4 +16,16 @@ router.post('/card', (req, res, next) => {
 	)
 });
 
+router.post('/deck', (req, res, next) => {
+	res.json(
+		{
+			id: "newdeck",
+			title: "",
+			description: "",
+		  	owner: parseInt(req.body.id),
+		  	cards: []
+		}
+	)
+});
+
 module.exports = router;

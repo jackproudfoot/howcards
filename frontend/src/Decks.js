@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+
 import DeckBoard from './DeckBoard';
 
 class Home extends Component {
@@ -14,6 +15,7 @@ class Home extends Component {
 	}
 	
 	render() {
+		
 		return (
 			<DeckBoard user={this.props.user} decks={this.state.decks}/>
 		)

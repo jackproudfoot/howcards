@@ -6,6 +6,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
+import Slide from '@material-ui/core/Slide'
+
 import red from '@material-ui/core/colors/red'
 import yellow from '@material-ui/core/colors/yellow'
 import green from '@material-ui/core/colors/green'
@@ -64,7 +66,7 @@ class User extends Component {
 		if (this.state.cards.length > 0) {
 			if (deckBoard === undefined) cardHeader = <Typography variant="subheading">Cards</Typography>
 			else cardHeader = (
-				<div>
+				<div>	
 					<Divider />
 					<Typography variant="subheading" className={this.props.classes.cardHeader}>Cards</Typography>
 				</div>
@@ -90,7 +92,6 @@ class User extends Component {
 					</div>
 			}
 			else {
-				console.log('hello')
 				pendingApproval = 
 					<div>
 						<Divider />
@@ -112,7 +113,6 @@ class User extends Component {
 					</div>
 			}
 			else {
-				console.log('hello')
 				approved = 
 					<div>
 						<Divider />
@@ -126,6 +126,7 @@ class User extends Component {
 		
 		
 		return (
+			<Slide direction="down" in={true} mountOnEnter unmountOnExit>	
 			<div>
 				{deckBoard}
 				{cardHeader}
@@ -133,6 +134,7 @@ class User extends Component {
 				{pendingApproval}
 				{approved}
 			</div>
+			</Slide>
 		)
 	}
 }

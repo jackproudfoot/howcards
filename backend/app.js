@@ -10,7 +10,8 @@ var indexRouter = require('./routes/index');
 var cardRouter = require('./routes/cards');
 var deckRouter = require('./routes/decks');
 var userRouter = require('./routes/users');
-var newRouter = require('./routes/new')
+var newRouter = require('./routes/new');
+var authRouter = require('./routes/auth');
 
 var app = express();
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(fileUpload());
 
+//Route management
 app.use('/public', express.static(__dirname + '/public'));
 
 app.use('/', indexRouter);
@@ -28,6 +30,7 @@ app.use('/card', cardRouter);
 app.use('/deck', deckRouter);
 app.use('/user', userRouter);
 app.use('/new', newRouter);
+app.use('/auth', authRouter)
 
 //Handles uploading images for the how cards
 app.post('/upload', (req, res, next) => {
@@ -51,6 +54,7 @@ app.post('/upload', (req, res, next) => {
 	});
 });
 
+app.set('view engine', 'html');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

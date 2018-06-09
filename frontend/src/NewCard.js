@@ -23,7 +23,7 @@ class NewCard extends Component {
 		
 		return (
 			<Route exact path="/new/card" render={() => (
-				<Redirect to={"/edit/"+this.state.card.id} />
+				<Redirect to={"/edit/c/"+this.state.card.id} />
 			)} />
 		)
 		

@@ -8,6 +8,7 @@
     "ajv": "^6.5.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
+    "react-google-login": "^3.2.1",
     "react-responsive": "^4.1.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
