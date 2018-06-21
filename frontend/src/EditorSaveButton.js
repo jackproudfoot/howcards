@@ -82,10 +82,10 @@ class EditorSaveButton extends Component {
 		//Logic for returning to card viewer
 		var linkWrapper;
 		if (this.props.saved && this.props.card !== undefined) {
-			linkWrapper = <Link to={"/card/"+this.props.card.id}>{button}</Link>;
+			linkWrapper = <Link to={"/card/"+this.props.card._id}>{button}</Link>;
 		}
 		else if (this.props.saved && this.props.deck !== undefined) {
-			linkWrapper = <Link to={"/deck/"+this.props.deck.id}>{button}</Link>;
+			linkWrapper = <Link to={"/deck/"+this.props.deck._id}>{button}</Link>;
 		}
 		else {
 			linkWrapper = button;

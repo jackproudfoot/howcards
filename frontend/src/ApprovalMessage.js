@@ -40,7 +40,7 @@ class ApprovalMessage extends Component {
 			</div>
 		)
 		
-		if (this.props.card.approved === 1 ) return null;
+		if (this.props.card.approved === 1 || this.props.card.approved === 3) return null;
 		
 		return (
 			<Grid container justify="center" spacing={8}>

@@ -71,20 +71,47 @@ class DeckViewer extends Component {
 		this.setState({ deck: newDeck, saved: false });
 	}
 	
+	addCard = (index) => {
+		var newDeck = this.state.deck;
+		newDeck.cards.push(this.state.cards[index]);
+		var newCards = this.state.cards;
+		newCards.splice(index, 1);
+		this.setState({ deck: newDeck, cards: newCards, saved: false });
+	}
+	
 	removeCard = (index) => {
+		var newCards = this.state.cards;
+		newCards.push(this.state.deck.cards[index]);
+		
 		var newDeck = this.state.deck;
 		newDeck.cards.splice(index, 1)
-		this.setState({ deck: newDeck, saved: false });
+		
+		this.setState({ deck: newDeck, cards: newCards, saved: false });
 	}
 	
 	save = () => {
 		if(this.props.user === undefined) window.location='/';
+		
+		const data = new FormData();
+		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
+		data.append('deck', JSON.stringify(this.state.deck));
+		fetch(('/save/d/'+this.state.deck._id), {
+  	  		method: "POST",
+			body: data
+  	  	})
+		.then(res => res.json())
+		.then(res => {
+			this.setState({ deck: res, saved: true })
+		});
 	}
 	
 	componentDidMount() {
   	  	fetch('/deck/'+this.props.match.params.id)
         .then(res => res.json())
         .then(deck => this.setState({ deck: deck, fetched: true }));
+  	  	fetch('/board')
+        .then(res => res.json())
+        .then(cards => this.setState({ cards }));
 	}
 	
 	render() {
@@ -105,6 +132,21 @@ class DeckViewer extends Component {
 		var cards = [];
 		for (var i = 0; i < this.state.deck.cards.length; i++) {
 			cards.push(<DeckViewerCard card={this.state.deck.cards[0]} width={this.props.width} key={i}/>);
+		}
+		
+		
+		
+		var addCards = this.state.cards;
+		if (addCards !== undefined) {
+			for (var j = 0; j < addCards.length; j++) {
+				for (var z = 0; z < this.state.deck.cards.length; z++) {
+					if (this.state.deck.cards[z]._id === addCards[j]._id) {
+						addCards.splice(j, 1);
+						j--;
+						break;
+					}
+				}
+			}
 		}
 		
 		return (
@@ -140,6 +182,10 @@ class DeckViewer extends Component {
 				</Grid>
 				
 				<Board user={this.props.user} cards={this.state.deck.cards} deckEditor={true} removeCard={this.removeCard}/>
+								
+				<Divider />
+								
+				<Board user={this.props.user} cards={addCards} deckEditor={true} addCard={this.addCard}/>
 				
 				<div className={this.props.classes.fab}>
 					<EditorSaveButton deck={this.state.deck} saved={this.state.saved} handleSave={this.save}/>

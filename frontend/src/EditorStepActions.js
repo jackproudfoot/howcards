@@ -27,7 +27,7 @@ class EditorStepActions extends Component {
 		const data = new FormData();
 		data.append('file', this.uploadInput.files[0]);
 		data.append('filename', this.props.card.images);
-		data.append('id', this.props.card.id)
+		data.append('id', this.props.card._id)
 		
 		fetch('/upload', {
 			method: 'POST',

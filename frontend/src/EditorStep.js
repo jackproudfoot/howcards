@@ -61,7 +61,7 @@ class EditorStep extends Component {
 	
 	addImage = () => {
 		var newCard = this.props.card;
-		newCard.steps[this.props.index].blocks.push({type: 'image', content: `/public/${newCard.id}/${newCard.images}.jpg`});
+		newCard.steps[this.props.index].blocks.push({type: 'image', content: `/public/${newCard._id}/${newCard.images}.jpg`});
 		newCard.images++;
 		this.props.changeCard(newCard);
 	}

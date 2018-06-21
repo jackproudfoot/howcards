@@ -24,13 +24,6 @@ class Board extends Component {
 		
 		if (this.props.cards === undefined) return null;
 		
-		if (this.props.deckEditor) {
-			
-		}
-		else {
-			
-		}
-		
 		/* THERE IS PROBABLY A BETTER WAY TO DO THIS */
 	
 		//Divide the cards into rows of three
@@ -39,24 +32,24 @@ class Board extends Component {
 			if (this.props.cards[i*3+2] !== undefined) {
 				rows.push(
 					<Grid container spacing={16} key={i}>
-						<Grid item xs><BoardCard data={this.props.cards[i*3]} index={i*3} removeCard={this.props.removeCard} deckEditor={this.props.deckEditor}/></Grid>
-						<Grid item xs><BoardCard data={this.props.cards[i*3+1]} index={i*3+1}  removeCard={this.props.removeCard}deckEditor={this.props.deckEditor}/></Grid>
-						<Grid item xs><BoardCard data={this.props.cards[i*3+2]} index={i*3+2}  removeCard={this.props.removeCard}deckEditor={this.props.deckEditor}/></Grid>
+						<Grid item xs><BoardCard data={this.props.cards[i*3]} index={i*3} removeCard={this.props.removeCard} addCard={this.props.addCard} deckEditor={this.props.deckEditor}/></Grid>
+						<Grid item xs><BoardCard data={this.props.cards[i*3+1]} index={i*3+1}  removeCard={this.props.removeCard} addCard={this.props.addCard} deckEditor={this.props.deckEditor}/></Grid>
+						<Grid item xs><BoardCard data={this.props.cards[i*3+2]} index={i*3+2}  removeCard={this.props.removeCard} addCard={this.props.addCard} deckEditor={this.props.deckEditor}/></Grid>
 					</Grid>
 				);
 			}
 			else if (this.props.cards[i*3+1] !== undefined) {
 				rows.push(
 					<Grid container spacing={16} key={i}>
-						<Grid item xs><BoardCard data={this.props.cards[i*3]} index={i*3}  removeCard={this.props.removeCard}deckEditor={this.props.deckEditor}/></Grid>
-							<Grid item xs><BoardCard data={this.props.cards[i*3+1]} index={i*3+1}  removeCard={this.props.removeCard}deckEditor={this.props.deckEditor}/></Grid>
+						<Grid item xs><BoardCard data={this.props.cards[i*3]} index={i*3}  removeCard={this.props.removeCard} addCard={this.props.addCard} deckEditor={this.props.deckEditor}/></Grid>
+							<Grid item xs><BoardCard data={this.props.cards[i*3+1]} index={i*3+1}  removeCard={this.props.removeCard} addCard={this.props.addCard} deckEditor={this.props.deckEditor}/></Grid>
 					</Grid>
 				);
 			}
 			else /*if (props.cards[i*3] != undefined)*/ {
 				rows.push(
 					<Grid container spacing={16} key={i}>
-						<Grid item xs><BoardCard data={this.props.cards[i*3]} index={i*3}  removeCard={this.props.removeCard}deckEditor={this.props.deckEditor}/></Grid>
+						<Grid item xs><BoardCard data={this.props.cards[i*3]} index={i*3}  removeCard={this.props.removeCard} addCard={this.props.addCard} deckEditor={this.props.deckEditor}/></Grid>
 					</Grid>
 				);
 			}

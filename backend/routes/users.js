@@ -1,46 +1,29 @@
 var express = require('express');
 var router = express.Router();
 
+var mongoose = require('mongoose')
+
 /* GET user page. */
 router.get('/:id', function(req, res, next) {
-	res.json(
-		{
-			cards: [
-    			{
-    				id: "12345",
-					title: "Connect to Wifi",
-					author: "Jack Proudfoot",
-					approved: 0
-    			},
-				{
-					id: "12346",
-					title: "Print",
-					author: "Jack Proudfoot",
-					approved: 1
-				},	
-				{
-					id: "12346",
-					title: "Print",
-					author: "Jack Proudfoot",
-					approved: 2
-				}
-    		],
-			decks: [
-				{
-					id: 1,
-					title: "First Deck"
-				},
-				{
-					id: 2,
-					title: "Second Deck"
-				},
-				{
-					id: 3,
-					title: "Third Deck"
-				},
-			]
-		}
-	);
+	
+	var Card = mongoose.model('Card')
+	var Deck = mongoose.model('Deck')
+	
+	console.log(parseInt(req.params.id))
+	
+	Card.find({ owner: req.params.id }, function(err, cards) {
+		if (err) return console.error(err);
+		
+		Deck.find({ owner: req.params.id, approved: 2 }, function(err, decks) {
+			if (err) return console.error(err);
+		
+			res.json({
+				cards: cards,
+				decks: decks
+			});
+		});
+	});
+	
 });
 
 module.exports = router;

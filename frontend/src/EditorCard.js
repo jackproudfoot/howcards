@@ -10,6 +10,10 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 
 import Button from '@material-ui/core/Button'
+import Tooltip from '@material-ui/core/Tooltip'
+import IconButton from '@material-ui/core/IconButton'
+
+import TrashIcon from '@material-ui/icons/Delete'
 
 import TextField from '@material-ui/core/TextField';
 
@@ -42,6 +46,15 @@ class EditorCard extends Component {
 		var newCard = this.props.card;
 		newCard.description = e.target.value;
 		this.props.changeCard(newCard);
+	}
+	
+	deleteCard = () => {
+		const data = new FormData();
+		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
+		fetch('/card/delete/:id', {
+  	  		method: "POST",
+			body: data
+  	  	});
 	}
 	
 	render() {
@@ -97,6 +110,14 @@ class EditorCard extends Component {
 								<Button variant="outlined" color="primary" className={this.props.classes.button} onClick={this.props.addStep}>
 									Add Step
 								</Button>
+							</Grid>
+							
+							<Grid item xs={1}>
+								<Tooltip title="Delete Card" placement="right">
+									<IconButton>
+										<TrashIcon />
+									</IconButton>
+								</Tooltip>
 							</Grid>
 						</Grid>
 

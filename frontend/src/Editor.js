@@ -61,12 +61,20 @@ class Editor extends Component {
 	}
 	
 	save = () => {
-		if(this.props.user === undefined) window.location='/card/'+this.state.card.id;
-		this.timer = setTimeout(() => {
-			this.setState({ saved: true });
-		}, 2000);
+		if(this.props.user === undefined) window.location='/card/'+this.state.card._id;
+		
+		const data = new FormData();
+		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
+		data.append('card', JSON.stringify(this.state.card));
+		fetch(('/save/c/'+this.state.card._id), {
+  	  		method: "POST",
+			body: data
+  	  	})
+		.then(res => res.json())
+		.then(res => {
+			this.setState({ card: res, saved: true })
+		});
 	}
-	timer = undefined;
 	
 	
 	selectCard = (index) => {
@@ -76,13 +84,13 @@ class Editor extends Component {
 	render() {	
 		//If the user does not have permission to edit card redirect them to the home page
 		var redirect;
-		if (this.state.fetched && this.props.user === undefined) {
+		if (this.props.user === undefined) {
 			redirect = 
 			<Route exact path={"/edit/c/" + this.props.match.params.id} render={() => (
 				<Redirect to={"/card/" + this.props.match.params.id}/>
 			)} />;
 		}
-		else if (this.state.fetched && (this.props.user.id !== this.state.card.owner && this.props.user.moderator === false)) {
+		else if (this.state.fetched && (this.props.user._id !== this.state.card.owner && this.props.user.moderator === false)) {
 			redirect = 
 			<Route exact path={"/edit/c" + this.props.match.params.id} render={() => (
 				<Redirect to={"/card/" + this.props.match.params.id} />
@@ -90,7 +98,7 @@ class Editor extends Component {
 		}
 		
 		var approvalMessage;
-		if (this.props.user !== undefined && (this.props.user.id === this.state.card.owner || this.props.user.moderator === true)) {
+		if (this.props.user !== undefined && (this.props.user._id === this.state.card.owner || this.props.user.moderator === true)) {
 			approvalMessage = <ApprovalMessage card={this.state.card} width={this.props.width}/>
 		}
 		

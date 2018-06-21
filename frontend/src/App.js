@@ -4,21 +4,14 @@ import Main from './Main'
 
 class App extends Component {
 	state = {
-		/*user: {
-			id: 1,
-			googleId: '108005168715097953515',
-			moderator: true,
-			admin: true,
-			name: "Jack"
-		}*/
+		
 	}
 	
 	handleLoginSuccess = (response) => {
 		sessionStorage.setItem('user', JSON.stringify(response));
-		fetch('/auth/user/' + response.googleId)
+		fetch('/auth/user/' + response.profileObj.email)
 			.then(res => res.json())
 			.then(user => this.setState({ user: user }));
-		
 	}
 	
 	handleLoginFailure = (response) => {
@@ -46,18 +39,23 @@ class App extends Component {
 						sessionStorage.setItem('user', null);
 					}
 					else {
-						fetch('/auth/user/' + res.googleId)
+						fetch('/auth/user/' + res.email)
 							.then(res => res.json())
 							.then(user => this.setState({ user: user }));
 					}
 				});	
 		}
+		
+		fetch('/moderate/settings')
+			.then(res => res.json())
+			.then(settings => this.setState({ settings: settings }));
 	}
 	
 	render() {
+		
 		 return (
 			 	<div className="App">
-			 			<Main user={this.state.user} handleLoginSuccess={this.handleLoginSuccess} handleLoginFailure={this.handleLoginFailure} handleLogoutSuccess={this.handleLogoutSuccess} handleLogoutFailure={this.handleLogoutFailure}/>
+			 			<Main user={this.state.user} settings={this.state.settings} handleLoginSuccess={this.handleLoginSuccess} handleLoginFailure={this.handleLoginFailure} handleLogoutSuccess={this.handleLogoutSuccess} handleLogoutFailure={this.handleLogoutFailure}/>
 				 </div>
 		 );
 	 }

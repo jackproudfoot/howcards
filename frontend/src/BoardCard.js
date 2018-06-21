@@ -15,6 +15,7 @@ import Grid from '@material-ui/core/Grid'
 import Slide from '@material-ui/core/Slide';
 
 import ClearIcon from '@material-ui/icons/Clear'
+import AddIcon from '@material-ui/icons/Add'
 
 const styles = theme => ({
 	paper: {	
@@ -32,14 +33,18 @@ const styles = theme => ({
 });
 
 class BoardCard extends Component{
-	state = {showDelete: 0}
+	state = {showOption: 0}
 	
 	showDelete = () => {
-		if (this.props.deckEditor) this.setState({ showDelete: 1 })
+		if (this.props.deckEditor) this.setState({ showOption: 1 })
 	}
 	
 	hideDelete = () => {
-		if (this.props.deckEditor) this.setState({ showDelete: this.props.elevation })
+		if (this.props.deckEditor) this.setState({ showOption: 0 })
+	}
+	
+	addCard = () => {
+		this.props.addCard(this.props.index);
 	}
 	
 	removeCard = () => {
@@ -47,13 +52,25 @@ class BoardCard extends Component{
 	}
 	
 	render() {
-		var deleteOption;
-		if (this.props.deckEditor && this.state.showDelete === 1) {
-			deleteOption = <Tooltip title="Remove Card" placement="right">
-							<IconButton aria-label="Remove Card" onClick={this.removeCard}>
-								<ClearIcon />
-							</IconButton>
-						</Tooltip>;
+		var cardOption;
+		if (this.props.deckEditor && this.state.showOption === 1) {
+			if (this.props.removeCard !== undefined) {
+				cardOption = 
+				<Tooltip title="Remove Card" placement="right">
+					<IconButton aria-label="Remove Card" onClick={this.removeCard}>
+						<ClearIcon />
+					</IconButton>
+				</Tooltip>;
+			}
+			else if (this.props.addCard !== undefined) {
+				cardOption = 
+				<Tooltip title="Add Card" placement="right">
+					<IconButton aria-label="Add Card" onClick={this.addCard}>
+						<AddIcon />
+					</IconButton>
+				</Tooltip>;
+			}
+			
 		}
 		
 		var content = <Slide direction="down" in={true} mountOnEnter unmountOnExit>
@@ -65,7 +82,7 @@ class BoardCard extends Component{
 							</Typography>
 						</Grid>
 						<Grid item xs={2}>
-							<div>{deleteOption}</div>
+							<div>{cardOption}</div>
 						</Grid>
 					
 					</Grid>
@@ -78,7 +95,7 @@ class BoardCard extends Component{
 		
 		if (this.props.deckEditor) return <div>{content}</div>;
 		return (
-			<Link style={{ color: "white", textDecoration: 'none' }} to={'/card/' + this.props.data.id}>
+			<Link style={{ color: "white", textDecoration: 'none' }} to={'/card/' + this.props.data._id}>
 				{content}
 			</Link>
 		)

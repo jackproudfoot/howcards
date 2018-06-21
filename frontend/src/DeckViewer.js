@@ -62,14 +62,14 @@ class DeckViewer extends Component {
 	render() {
 		var cards = [];
 		for (var i = 0; i < this.state.deck.cards.length; i++) {
-			cards.push(<DeckViewerCard card={this.state.deck.cards[0]} width={this.props.width} key={i}/>);
+			cards.push(<DeckViewerCard card={this.state.deck.cards[i]} width={this.props.width} key={i}/>);
 		}
 		
 		var editButton;
-		if (this.props.user !== undefined && (this.props.user.id === this.state.deck.owner || this.props.user.moderator === true)) {
+		if (this.props.user !== undefined && (this.props.user._id === this.state.deck.owner || this.props.user.moderator === true)) {
 			editButton = 
 				<div className={this.props.classes.fab}>
-					<Link style={{ color: "white", textDecoration: 'none' }} to={'/edit/d/' + this.state.deck.id}>
+					<Link style={{ color: "white", textDecoration: 'none' }} to={'/edit/d/' + this.state.deck._id}>
 						<EditButton />
 					</Link>
 				</div>;

@@ -65,9 +65,6 @@ class ViewerStep extends Component {
 		} 
 		
 		//Don't show step divider if it's last step
-		var divider;
-		if (this.props.index !== step.blocks.length) divider = <Divider className={this.props.classes.divider}/>;
-		
 		return (
 			<Paper align='left' className={this.props.classes.paper} elevation={0}>
 				<Grid container spacing={0}>
@@ -89,8 +86,6 @@ class ViewerStep extends Component {
 				<Grid direction="column" container spacing={16}>
 					{blocks}
 				</Grid>
-					
-				{divider}
 				
 			</Paper>
 		)

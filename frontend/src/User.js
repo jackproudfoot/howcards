@@ -104,7 +104,7 @@ class User extends Component {
 		}
 		
 		var approved;
-		if (pendingApprovalCards.length > 0) {
+		if (approvedCards.length > 0) {
 			if (deniedApproval === undefined && pendingApproval === undefined) {
 				approved = 
 					<div className={this.props.classes.firstBoard}>

@@ -41,18 +41,18 @@ class Viewer extends Component {
 	render() {
 		
 		var editButton;
-		if (this.props.user !== undefined && (this.props.user.id === this.state.card.owner || this.props.user.moderator === true)) {
+		if (this.props.user !== undefined && (this.props.user._id === this.state.card.owner || this.props.user.moderator === true)) {
 			editButton = 
 				<div className={this.props.classes.fab}>
-					<Link style={{ color: "white", textDecoration: 'none' }} to={'/edit/c/' + this.state.card.id}>
-						<EditButton id={this.state.card.id}/>
+					<Link style={{ color: "white", textDecoration: 'none' }} to={'/edit/c/' + this.state.card._id}>
+						<EditButton id={this.state.card._id}/>
 					</Link>
 				</div>;
 		}
 		
 		
 		var approvalMessage;
-		if (this.props.user !== undefined && (this.props.user.id === this.state.card.owner || this.props.user.moderator === true)) {
+		if (this.props.user !== undefined && (this.props.user._id === this.state.card.owner || this.props.user.moderator === true) && !this.state.card.approved) {
 			approvalMessage = <ApprovalMessage card={this.state.card} width={this.props.width}/>
 		}
 		

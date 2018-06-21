@@ -36,7 +36,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import ReviewIcon from '@material-ui/icons/RateReview';
 import SupervisorIcon from '@material-ui/icons/SupervisorAccount';
 import DecksIcon from '@material-ui/icons/FilterNone';
-import BackIcon from '@material-ui/icons/ArrowBack';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 //import SearchBar from './SearchBar';
 
@@ -76,10 +76,6 @@ class HeaderBar extends Component {
 	
 	toggleDrawer = (open) => {
 		this.setState({drawer: !this.state.drawer})
-	}
-	
-	goBack = () => {
-		this.props.history.goBack();
 	}
 	
 	handleLogoutMenuOpen = (event) => {
@@ -172,11 +168,25 @@ class HeaderBar extends Component {
 			</Link>
 		);
 	
+		//If user is owner show settings option on drawer
+		var ownerOptions;
+		if (this.props.user !== undefined && this.props.user.owner) ownerOptions = (
+			<Link className={this.props.classes.link} to='/moderate/settings'>
+			<ListItem button>
+				<ListItemIcon>
+					<SettingsIcon />
+				</ListItemIcon>
+					
+				<ListItemText primary={<Typography variant="subheading" color='textSecondary'>Settings</Typography>}/>
+			</ListItem>
+			</Link>
+		);
+	
 		//If user is logged in show their cards
 		var userOptions;
 		if (this.props.user !== undefined) {
 			userOptions = 
-				<Link to={'/user/' + this.props.user.id} className={this.props.classes.link}>
+				<Link to={'/user/' + this.props.user._id} className={this.props.classes.link}>
 					<ListItem button>
 			
 						<ListItemIcon>
@@ -188,36 +198,61 @@ class HeaderBar extends Component {
 				</Link>
 			
 		}
+		
+		//If the user is logged in allow them to create cards
+		var newOptions = (
+						<div>
+							<ListSubheader>Create</ListSubheader>
+					
+							<Link to='/new/card' className={this.props.classes.link}>
+							<ListItem button>
+			
+								<ListItemIcon>
+									<AddCardIcon className={this.props.classes.primaryListButton}/>
+								</ListItemIcon>
+								<ListItemText primary={<Typography variant="subheading" color='textSecondary'>New Card</Typography>}/>
+						
+							</ListItem>
+							</Link>
+			
+							<Link to='/new/deck' className={this.props.classes.link}>
+							<ListItem button>
+			
+								<ListItemIcon>
+									<AddDeckIcon className={this.props.classes.primaryListButton}/>
+								</ListItemIcon>
+								<ListItemText primary={<Typography variant="subheading" color='textSecondary'>New Deck</Typography>}/>
+						
+							</ListItem>
+							</Link>
+			
+							<Divider />
+						</div>
+					);
+		var showNewOptions = false;
+		
+		if (this.props.user !== undefined) {
+			if (this.props.settings.moderatorsOnly) {
+				if (this.props.user.moderator || this.props.user.admin || this.props.user.owner) {
+					showNewOptions = true;
+				}
+			}
+			else if (this.props.settings.domainRestriction) {
+				var userdomain = this.props.user.email.slice(this.props.user.email.indexOf('@')+1);
+				if (userdomain === this.props.settings.domain || this.props.user.moderator || this.props.user.admin || this.props.user.owner) {
+					showNewOptions = true;
+				}
+			}
+			else {
+				showNewOptions = true;
+			}
+		}
 	
 		//Drawer UI
 		var drawer = (
 			<div className={this.props.classes.drawer}>
 				<List>
-					<ListSubheader>Create</ListSubheader>
-					
-					<Link to='/new/card' className={this.props.classes.link}>
-					<ListItem button>
-			
-						<ListItemIcon>
-							<AddCardIcon className={this.props.classes.primaryListButton}/>
-						</ListItemIcon>
-						<ListItemText primary={<Typography variant="subheading" color='textSecondary'>New Card</Typography>}/>
-						
-					</ListItem>
-					</Link>
-			
-					<Link to='/new/deck' className={this.props.classes.link}>
-					<ListItem button>
-			
-						<ListItemIcon>
-							<AddDeckIcon className={this.props.classes.primaryListButton}/>
-						</ListItemIcon>
-						<ListItemText primary={<Typography variant="subheading" color='textSecondary'>New Deck</Typography>}/>
-						
-					</ListItem>
-					</Link>
-			
-					<Divider />
+					{showNewOptions ? newOptions : null}
 					
 					<ListSubheader>Discover</ListSubheader>
 					
@@ -247,6 +282,7 @@ class HeaderBar extends Component {
 			
 					{moderatorOptions}
 					{adminOptions}
+					{ownerOptions}
 				</List>
 			</div>
 		);
@@ -255,8 +291,8 @@ class HeaderBar extends Component {
 			<div className={this.props.classes.root}>
 				<AppBar>
 					<Toolbar>
-						<IconButton className={this.props.classes.menuButton} color="inherit" aria-label="Menu" onClick={(this.props.home ? this.toggleDrawer : this.goBack)}>
-							{this.props.home ? <MenuIcon/> : <BackIcon />}
+						<IconButton className={this.props.classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleDrawer}>
+							<MenuIcon/>
 						</IconButton>
 						<Typography align='left' variant="title" color="inherit" className={this.props.classes.flex}>
 							<Link className={this.props.classes.link} to='/'>Howcards</Link>

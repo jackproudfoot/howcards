@@ -1,46 +1,45 @@
+var fetch = require('node-fetch');
+
 var express = require('express');
 var router = express.Router();
 
-/* GET card listing. */
+var mongoose = require('mongoose');
+
+router.get('/delete/:id', function(req, res, next) {
+	/*fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+ req.body.token)
+	.then(googleRes => googleRes.json())
+	.then(googleRes => {
+		if(googleRes.aud === "538060071841-5re2m26t7j4ld0qbl60dt0cfg0fek943.apps.googleusercontent.com") {
+			
+			var User = mongoose.model('User')
+			var Card = mongoose.model('Card')
+			
+			User.findOne({ email: googleRes.email}, function(err, accessUser) {
+				if (err) return console.error(err);
+				
+				if (accessUser.owner) {
+					
+				}
+			}
+			*/
+	
+	//NOT YET IMPLEMENTED
+			
+	res.json({})
+	
+})
 
 router.get('/:id', function(req, res, next) {
-  res.json(
-	  {
-		  id: req.params.id,
-		  owner: 1,
-		  title: "Print Test",
-		  description: "Registering your ID to print",
-		  images: 1,
-		  steps: [
-			  {
-				  title: "First Title",
-				  blocks: [
-					  {type: 'text', content: "Hello there this is text for the first step"},
-					  {type: 'text', content: "Here is some more text"},
-					  {type: 'image', content: "/public/12345/0.jpg"}
-					  
-				  ]
-			  },
-			  {
-				  title: "Second Title",
-				  blocks: [
-					  {type: 'text', content: "Hello there this is text for the second step"},
-					  {type: 'text', content: "Here is some more text"}
-				  ]
-			  },
-			  {
-				  title: "Third title",
-				  blocks: [
-					  {type: 'text', content: "Hello there this is text for the third step"},
-					  {type: 'text', content: "Here is some more text"}
-				  ]
-			  }
-		  ],
-		  approved: 1,
-		  approvalMessage: "This card has not been approved",
-		  approvalBy: 1
-	  }
-  );
+	var Card = mongoose.model('Card')
+	
+	Card.findById(req.params.id, function(err, card) {
+		if (err) return console.error(err);
+		
+		if (card === undefined) res.json({})
+		else {
+			res.json(card);
+		}
+	});
 });
 
 module.exports = router;
