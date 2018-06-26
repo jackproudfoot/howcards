@@ -21,7 +21,7 @@ router.post('/user', (req, res, next) => {
 	fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+ req.body.token)
 	.then(googleRes => googleRes.json())
 	.then(googleRes => {
-		if(googleRes.aud === "538060071841-5re2m26t7j4ld0qbl60dt0cfg0fek943.apps.googleusercontent.com") {
+		if(googleRes.aud === process.env.OAUTH_AUD) {
 			
 			//Validate that user has proper permissions
 			var User = mongoose.model('User')
@@ -56,7 +56,7 @@ router.post('/user/permissions', (req, res, next) => {
 	fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+ req.body.token)
 	.then(googleRes => googleRes.json())
 	.then(googleRes => {
-		if(googleRes.aud === "538060071841-5re2m26t7j4ld0qbl60dt0cfg0fek943.apps.googleusercontent.com") {
+		if(googleRes.aud === process.env.OAUTH_AUD) {
 			
 			var User = mongoose.model('User')
 			
@@ -107,7 +107,7 @@ router.post('/card', (req, res, next) => {
 	fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+ req.body.token)
 	.then(googleRes => googleRes.json())
 	.then(googleRes => {
-		if(googleRes.aud === "538060071841-5re2m26t7j4ld0qbl60dt0cfg0fek943.apps.googleusercontent.com") {
+		if(googleRes.aud === process.env.OAUTH_AUD) {
 			var User = mongoose.model('User')
 			
 			User.findOne({ email: googleRes.email}, function(err, accessUser) {
@@ -160,7 +160,7 @@ router.post('/changeSettings', (req, res, next) => {
 	fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+ req.body.token)
 	.then(googleRes => googleRes.json())
 	.then(googleRes => {
-		if(googleRes.aud === "538060071841-5re2m26t7j4ld0qbl60dt0cfg0fek943.apps.googleusercontent.com") {
+		if(googleRes.aud === process.env.OAUTH_AUD) {
 			
 			var User = mongoose.model('User')
 			
@@ -251,7 +251,7 @@ router.post('/deleteBlanks', (req, res, next) => {
 	fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+ req.body.token)
 	.then(googleRes => googleRes.json())
 	.then(googleRes => {
-		if(googleRes.aud === "538060071841-5re2m26t7j4ld0qbl60dt0cfg0fek943.apps.googleusercontent.com") {
+		if(googleRes.aud === process.env.OAUTH_AUD) {
 			
 			var User = mongoose.model('User')
 			

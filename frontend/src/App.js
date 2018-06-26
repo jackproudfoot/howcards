@@ -34,7 +34,7 @@ class App extends Component {
 			fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='+token.tokenId)
 				.then(res => res.json())
 				.then(res => {
-					if (res.aud !== "538060071841-5re2m26t7j4ld0qbl60dt0cfg0fek943.apps.googleusercontent.com") {
+					if (res.aud !== "984851854765-cdu7ujm6nm2ttq6jvd11lrbfc0bcan64.apps.googleusercontent.com") {
 						console.log('invalid user token')
 						sessionStorage.setItem('user', null);
 					}

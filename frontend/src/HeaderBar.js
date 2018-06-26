@@ -93,18 +93,15 @@ class HeaderBar extends Component {
 	render() {
 		//Logic for handling login/logout buttons
 		var headerButton = <GoogleLogin
-								clientId="538060071841-5re2m26t7j4ld0qbl60dt0cfg0fek943.apps.googleusercontent.com"
+								clientId="984851854765-cdu7ujm6nm2ttq6jvd11lrbfc0bcan64.apps.googleusercontent.com"
 								onSuccess={this.props.handleLoginSuccess}
 								onFailure={this.props.handleLoginFailure}
 								render={(signIn) => {
 									return <Button color="inherit" onClick={signIn.onClick}>Login</Button>;
-									//return <div>Hello</div>
 								}}
 							/>;
 		
-		/*var headerButton = <a className={this.props.classes.link} href="http://localhost:3001/auth/login">
-								<Button color="inherit">Login</Button>
-							</a>;*/
+		
 		if (this.props.user !== undefined) headerButton = <div>
 			<IconButton 
 				aria-label="More" 
