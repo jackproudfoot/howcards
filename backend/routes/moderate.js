@@ -152,7 +152,20 @@ router.get('/settings', (req, res, next) => {
 	Settings.findOne(function(err, settings) {
 		if (err) return console.error(err);
 		
-		res.json(settings)
+		if (settings === null) {
+			var newSettings = new Settings({
+				moderatorsOnly: false,
+				domainRestriction: false,
+				domain: '',
+				owner: 'jackson.proudfoot@gmail.com'
+			});
+		
+			newSettings.save(function(err, newS) {
+				if (err) return console.error(err);
+				res.json(newS);
+			})
+		}
+		else res.json(settings)
 	})
 });
 
