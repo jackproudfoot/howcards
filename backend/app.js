@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 
 //Route management
-app.use('/public', express.static(__dirname + '/public'));
+//app.use('/public', express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
         res.sendFile(path.join(__dirname, 'build', 'index.html'));
@@ -92,7 +92,7 @@ app.post('/upload', (req, res, next) => {
 	let imageFile = req.files.file;
 	
 	//Stores the images in a folder structure with each card having its own folder
-	fs.mkdir(`public/${req.body.id}`, function(e) {
+	fs.mkdir(express.static(__dirname + `public/${req.body.id}`), function(e) {
 		if (!e || e.code === 'EEXIST') {
 			imageFile.mv(`public/${req.body.id}/${req.body.filename}.jpg`, function(err) {
 				if (err) {
