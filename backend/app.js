@@ -91,8 +91,13 @@ db.once('open', function() {
 app.post('/upload', (req, res, next) => {
 	let imageFile = req.files.file;
 	
+	fs.mkdir(express.static(__dirname + '/public/test'), function(e) {
+		if (e) console.log(e);
+		else console.log('Created')
+	});
+	
 	//Stores the images in a folder structure with each card having its own folder
-	fs.mkdir(express.static(__dirname + `/public/${req.body.id}`), function(e) {
+	/*fs.mkdir(express.static(__dirname + `/public/${req.body.id}`), function(e) {
 		if (!e || e.code === 'EEXIST') {
 			imageFile.mv(express.static(__dirname + `/public/${req.body.id}`), function(err) {
 				if (err) {
@@ -105,7 +110,7 @@ app.post('/upload', (req, res, next) => {
 		else {
 			console.log(e);
 		}
-	});
+	});*/
 });
 
 app.set('view engine', 'html');
