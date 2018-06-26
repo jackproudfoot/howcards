@@ -39,7 +39,7 @@ class Editor extends Component {
 	};
 	
 	componentDidMount() {
-		fetch('/card/' + this.props.match.params.id)
+		fetch('/api/card/' + this.props.match.params.id)
 			.then(res => res.json())
 			.then(card => this.setState({ card: card, fetched: true }));
 	}
@@ -66,7 +66,7 @@ class Editor extends Component {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
 		data.append('card', JSON.stringify(this.state.card));
-		fetch(('/save/c/'+this.state.card._id), {
+		fetch(('/api/save/c/'+this.state.card._id), {
   	  		method: "POST",
 			body: data
   	  	})

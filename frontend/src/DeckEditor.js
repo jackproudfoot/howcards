@@ -95,7 +95,7 @@ class DeckViewer extends Component {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
 		data.append('deck', JSON.stringify(this.state.deck));
-		fetch(('/save/d/'+this.state.deck._id), {
+		fetch(('/api/save/d/'+this.state.deck._id), {
   	  		method: "POST",
 			body: data
   	  	})
@@ -106,10 +106,10 @@ class DeckViewer extends Component {
 	}
 	
 	componentDidMount() {
-  	  	fetch('/deck/'+this.props.match.params.id)
+  	  	fetch('/api/deck/'+this.props.match.params.id)
         .then(res => res.json())
         .then(deck => this.setState({ deck: deck, fetched: true }));
-  	  	fetch('/board')
+  	  	fetch('/api/board')
         .then(res => res.json())
         .then(cards => this.setState({ cards }));
 	}

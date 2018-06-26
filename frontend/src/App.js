@@ -9,7 +9,7 @@ class App extends Component {
 	
 	handleLoginSuccess = (response) => {
 		sessionStorage.setItem('user', JSON.stringify(response));
-		fetch('/auth/user/' + response.profileObj.email)
+		fetch('/api/auth/user/' + response.profileObj.email)
 			.then(res => res.json())
 			.then(user => this.setState({ user: user }));
 	}
@@ -39,14 +39,14 @@ class App extends Component {
 						sessionStorage.setItem('user', null);
 					}
 					else {
-						fetch('/auth/user/' + res.email)
+						fetch('/api/auth/user/' + res.email)
 							.then(res => res.json())
 							.then(user => this.setState({ user: user }));
 					}
 				});	
 		}
 		
-		fetch('/moderate/settings')
+		fetch('/api/moderate/settings')
 			.then(res => res.json())
 			.then(settings => this.setState({ settings: settings }));
 	}

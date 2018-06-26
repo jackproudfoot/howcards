@@ -10,7 +10,7 @@ class NewDeck extends Component {
 		if (this.props.user !== undefined) {
 			const data = new FormData();
 			data.append('id', this.props.user._id);
-			fetch('/new/deck', {
+			fetch('/api/new/deck', {
 	  	  		method: "POST",
 				body: data
 	  	  	})

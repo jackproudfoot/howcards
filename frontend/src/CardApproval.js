@@ -24,7 +24,7 @@ class CardApproval extends Component {
 	state = { cards: [] }
 	
 	componentDidMount() {
-		fetch('/moderate/cards')
+		fetch('/api/moderate/cards')
 			.then(res => res.json())
 			.then(cards => this.setState({ cards }));
 	}
@@ -37,7 +37,7 @@ class CardApproval extends Component {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
 		data.append('card', JSON.stringify(newCard));
-		fetch('/moderate/card', {
+		fetch('/api/moderate/card', {
   	  		method: "POST",
 			body: data
   	  	})
@@ -56,7 +56,7 @@ class CardApproval extends Component {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
 		data.append('card', JSON.stringify(newCard));
-		fetch('/moderate/card', {
+		fetch('/api/moderate/card', {
   	  		method: "POST",
 			body: data
   	  	})

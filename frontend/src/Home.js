@@ -8,7 +8,7 @@ class Home extends Component {
 	}
 	
 	componentDidMount() {
-  	  	fetch('/board')
+  	  	fetch('/api/board')
         .then(res => res.json())
         .then(cards => this.setState({ cards }));
 	}

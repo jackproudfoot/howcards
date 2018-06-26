@@ -22,19 +22,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(fileUpload());
+app.use(express.static(path.join(__dirname, 'build')));
+
 
 //Route management
 app.use('/public', express.static(__dirname + '/public'));
 
-app.use('/', indexRouter);
-app.use('/board', indexRouter)
-app.use('/card', cardRouter);
-app.use('/deck', deckRouter);
-app.use('/user', userRouter);
-app.use('/new', newRouter);
-app.use('/save', saveRouter)
-app.use('/auth', authRouter)
-app.use('/moderate', moderateRouter)
+app.get('/', function(req, res) {
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+app.use('/api/', indexRouter);
+app.use('/api/board', indexRouter)
+app.use('/api/card', cardRouter);
+app.use('/api/deck', deckRouter);
+app.use('/api/user', userRouter);
+app.use('/api/new', newRouter);
+app.use('/api/save', saveRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/moderate', moderateRouter)
 
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');

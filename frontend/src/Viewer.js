@@ -33,7 +33,7 @@ class Viewer extends Component {
 	}
 	
 	componentDidMount() {
-		fetch('/card/' + this.props.match.params.id)
+		fetch('/api/card/' + this.props.match.params.id)
 			.then(res => res.json())
 			.then(card => this.setState({ card: card }));
 	}

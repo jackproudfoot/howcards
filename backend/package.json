@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "PORT=3001 OAUTH_AUD=984851854765-cdu7ujm6nm2ttq6jvd11lrbfc0bcan64.apps.googleusercontent.com node ./bin/www"
+    "start": "PORT=3000 OAUTH_AUD=984851854765-cdu7ujm6nm2ttq6jvd11lrbfc0bcan64.apps.googleusercontent.com node ./bin/www"
   },
   "dependencies": {
     "bluebird": "^3.5.1",

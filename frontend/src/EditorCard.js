@@ -51,7 +51,7 @@ class EditorCard extends Component {
 	deleteCard = () => {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
-		fetch('/card/delete/:id', {
+		fetch('/api/card/delete/:id', {
   	  		method: "POST",
 			body: data
   	  	});

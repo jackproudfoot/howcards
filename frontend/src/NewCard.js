@@ -9,7 +9,7 @@ class NewCard extends Component {
 		if (this.props.user !== undefined) {
 			const data = new FormData();
 			data.append('id', this.props.user._id);
-			fetch('/new/card', {
+			fetch('/api/new/card', {
 				method: "POST",
 				body: data
 			 })

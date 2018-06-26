@@ -54,7 +54,7 @@ class DeckViewer extends Component {
 	}
 	
 	componentDidMount() {
-  	  	fetch('/deck/'+this.props.match.params.id)
+  	  	fetch('/api/deck/'+this.props.match.params.id)
         .then(res => res.json())
         .then(deck => this.setState({ deck }));
 	}

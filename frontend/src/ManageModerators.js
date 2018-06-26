@@ -44,7 +44,7 @@ class ManageModerators extends Component {
 	state = { users: [], newAdmin: '', newModerator: '' };
 	
 	componentDidMount() {
-  	  	fetch('/moderate/users')
+  	  	fetch('/api/moderate/users')
         .then(res => res.json())
         .then(users => this.setState({ users: users }));
 	}
@@ -68,7 +68,7 @@ class ManageModerators extends Component {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
 		data.append('user', JSON.stringify(newUser));
-		fetch('/moderate/user/permissions', {
+		fetch('/api/moderate/user/permissions', {
   	  		method: "POST",
 			body: data
   	  	})
@@ -99,7 +99,7 @@ class ManageModerators extends Component {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
 		data.append('user', JSON.stringify(newUser));
-		fetch('/moderate/user/permissions', {
+		fetch('/api/moderate/user/permissions', {
   	  		method: "POST",
 			body: data
   	  	})
@@ -124,7 +124,7 @@ class ManageModerators extends Component {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
 		data.append('user', JSON.stringify(newUser));
-		fetch('/moderate/user', {
+		fetch('/api/moderate/user', {
   	  		method: "POST",
 			body: data
   	  	})
@@ -142,7 +142,7 @@ class ManageModerators extends Component {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
 		data.append('user', JSON.stringify(newUser));
-		fetch('/moderate/user', {
+		fetch('/api/moderate/user', {
   	  		method: "POST",
 			body: data
   	  	})

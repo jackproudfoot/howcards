@@ -51,7 +51,7 @@ class Settings extends Component {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
 		data.append('settings', JSON.stringify(this.state));
-		fetch('/moderate/changeSettings', {
+		fetch('/api/moderate/changeSettings', {
   	  		method: "POST",
 			body: data
   	  	})
@@ -61,14 +61,14 @@ class Settings extends Component {
 	deleteBlanks = () => {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
-		fetch('/moderate/deleteBlanks', {
+		fetch('/api/moderate/deleteBlanks', {
   	  		method: "POST",
 			body: data
   	  	});
 	}
 	
 	componentDidMount() {
-		fetch('/moderate/settings')
+		fetch('/api/moderate/settings')
 			.then(res => res.json())
 			.then(res => this.setState( res ));
 	}

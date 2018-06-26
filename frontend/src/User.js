@@ -38,7 +38,7 @@ class User extends Component {
 	}
 	
 	componentDidMount() {
-  	  	fetch('/user/'+ this.props.match.params.id)
+  	  	fetch('/api/user/'+ this.props.match.params.id)
         .then(res => res.json())
         .then(user => this.setState({ cards: user.cards, decks: user.decks }));
 	}
