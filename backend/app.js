@@ -94,7 +94,7 @@ app.post('/upload', (req, res, next) => {
 	//Stores the images in a folder structure with each card having its own folder
 	fs.mkdir(__dirname + `/public/${req.body.id}`, function(e) {
 		if (!e || e.code === 'EEXIST') {
-			imageFile.mv(__dirname + `/public/${req.body.id}`, function(err) {
+			imageFile.mv(__dirname + `/public/${req.body.id}/${req.body.filename}.jpg`, function(err) {
 				if (err) {
 					return res.status(500).send(err);
 				}
