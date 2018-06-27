@@ -51,10 +51,11 @@ class EditorCard extends Component {
 	deleteCard = () => {
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
-		fetch('/api/card/delete/:id', {
+		fetch('/api/card/delete/'+this.props.card._id, {
   	  		method: "POST",
 			body: data
-  	  	});
+  	  	})
+		.then(res => {window.location="/"});
 	}
 	
 	render() {
@@ -114,7 +115,7 @@ class EditorCard extends Component {
 							
 							<Grid item xs={1}>
 								<Tooltip title="Delete Card" placement="right">
-									<IconButton>
+									<IconButton onClick={this.deleteCard}>
 										<TrashIcon />
 									</IconButton>
 								</Tooltip>
