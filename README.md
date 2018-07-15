@@ -26,7 +26,7 @@ npm run build
 
 The API may be accessed at the /api endpoint.
 | Request | Route | Response | Authentication Required |
-| :---: | :---: | :---: | :---: |
+| :-----: | :---: | :---: | :------------------: |
 | GET | /board | An array containing all of the approved cards. | No |
 | GET | /card/:id | The card with id | No |
 | POST | /card/delete/id | Deletes the card | Yes |
