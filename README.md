@@ -25,6 +25,11 @@ npm run build
 ### Backend API
 
 The API may be accessed at the /api endpoint.
+
+| A | B | C |
+| --- | --- | --- |
+| Hi | hi | hey |
+
 | Request | Route | Response | Authentication Required |
 | ----- | --- | --- | ------------------ |
 | GET | /board | An array containing all of the approved cards. | No |
