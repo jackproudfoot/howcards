@@ -9,6 +9,15 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import IconButton from '@material-ui/core/IconButton'
@@ -35,6 +44,7 @@ const styles = theme => ({
 });
 
 class EditorCard extends Component {
+	state = {delete: false}
 	
 	changeTitle = (e) => {
 		var newCard = this.props.card;
@@ -49,6 +59,15 @@ class EditorCard extends Component {
 	}
 	
 	deleteCard = () => {
+		this.setState({delete: true})
+	}
+	
+	cancelDelete = () => {
+		this.setState({delete: false})
+	}
+	
+	handleDelete = () => {
+		this.setState({delete: false})
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
 		fetch('/api/card/delete/'+this.props.card._id, {
@@ -58,8 +77,56 @@ class EditorCard extends Component {
 		.then(res => {window.location="/"});
 	}
 	
+	toggleFacultyOnly = () => {
+		var newCard = this.props.card;
+		newCard.isFaculty = !newCard.isFaculty;
+		this.props.changeCard(newCard);
+	}
+	
 	render() {
+		var facultyOnly;
+		if(this.props.card.isFaculty !== undefined && this.props.user !== undefined && ((isNaN(parseInt(this.props.user.email.slice(this.props.user.email.indexOf('@') - 2, this.props.user.email.indexOf('@')), 10))  && this.props.user.email.slice(this.props.user.email.indexOf('@')) === '@pingry.org') || this.props.user.admin || this.props.user.owner)) {
+			facultyOnly = (
+			<Grid item xs={1}>
+				<FormControlLabel 
+					control={
+						<Switch
+ 							checked={this.props.card.isFaculty}
+							onChange={e => this.toggleFacultyOnly(e, this)}
+							value="facultyOnly"
+						/>
+					}
+					label="Faculty Only"
+				/>
+			</Grid>
+			)
+		}
+		
 		return (
+			<div>
+			
+			<Dialog
+				open={this.state.delete}
+				onClose={this.cancelDelete}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">{"Delete Card?"}</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						Are you sure you want to delete this card? This action cannot be undone.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={this.cancelDelete} color="primary">
+						Cancel
+					</Button>
+					<Button onClick={this.handleDelete} color="primary" autoFocus>
+						Delete
+					</Button>
+				</DialogActions>
+			</Dialog>
+			
 			<Grid container justify="center" spacing={16}>
 				<Grid item xs={this.props.width}>
 					<Zoom in={true}>
@@ -107,6 +174,8 @@ class EditorCard extends Component {
 						<Divider />
 					
 						<Grid container align="center" spacing={0}>
+							{facultyOnly}
+							
 							<Grid item xs>
 								<Button variant="outlined" color="primary" className={this.props.classes.button} onClick={this.props.addStep}>
 									Add Step
@@ -127,6 +196,8 @@ class EditorCard extends Component {
 							
 				</Grid>
 			</Grid>
+							
+			</div>
 		)
 	}
 }

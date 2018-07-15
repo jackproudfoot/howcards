@@ -30,6 +30,7 @@ router.post('/c/:id', function(req, res, next) {
 						card.description = reqCard.description;
 						card.images = reqCard.images;
 						card.steps = reqCard.steps;
+						card.isFaculty = reqCard.isFaculty;
 						card.approved = 2;
 						
 						card.save(function(err, newC) {
@@ -73,6 +74,7 @@ router.post('/d/:id', function(req, res, next) {
 						deck.title = reqDeck.title;
 						deck.description = reqDeck.description;
 						deck.cards = reqDeck.cards;
+						deck.isFaculty = reqDeck.isFaculty;
 						deck.approved = 2;
 						
 						deck.save(function(err, newD) {

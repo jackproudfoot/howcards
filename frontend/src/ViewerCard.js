@@ -12,7 +12,12 @@ import Divider from '@material-ui/core/Divider';
 import Zoom from '@material-ui/core/Zoom'
 
 import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+
+import EditIcon from '@material-ui/icons/Edit'
+import CheckIcon from '@material-ui/icons/Check'
+import ClearIcon from '@material-ui/icons/Clear'
 
 import red from '@material-ui/core/colors/red'
 import green from '@material-ui/core/colors/green'
@@ -52,8 +57,20 @@ class ViewerCard extends Component {
 		this.setState({approvalMessage: ''})
 	}
 	
+	editCard = () => {
+		window.location = "/edit/c/" + this.props.card._id
+	}
 	
 	render() {
+		
+		var facultyOnly;
+		if (this.props.approval && this.props.card.isFaculty) {
+			facultyOnly = (
+				<Typography variant="caption">
+					This card can only be viewed by faculty.
+				</Typography>
+			)
+		}
 		
 		var approval;
 		if (this.props.approval) {
@@ -73,15 +90,27 @@ class ViewerCard extends Component {
 			
 					<Grid container spacing={8} justify="space-around">
 						<Grid item>
-							<Button variant="outlined" onClick={this.approveCard} className={this.props.classes.button} style={{color: green[500]}}>
-								Approve
-							</Button>
+							<Tooltip title="Approve" placement="right">
+							<IconButton onClick={this.approveCard} className={this.props.classes.button} style={{color: green[500]}}>
+								<CheckIcon />
+							</IconButton>
+							</Tooltip>
 						</Grid>
 				
 						<Grid item>
-							<Button variant="outlined" onClick={this.denyCard} className={this.props.classes.button} style={{color: red[500]}}>
-								Deny
-							</Button>
+							<Tooltip title="Deny" placement="right">
+							<IconButton onClick={this.denyCard} className={this.props.classes.button} style={{color: red[500]}}>
+								<ClearIcon />
+							</IconButton>
+							</Tooltip>
+						</Grid>
+						
+						<Grid item xs={1}>
+							<Tooltip title="Edit" placement="right">
+							<IconButton onClick={this.editCard} className={this.props.classes.button}>
+								<EditIcon />
+							</IconButton>
+							</Tooltip>
 						</Grid>
 					</Grid>
 				</div>
@@ -106,6 +135,7 @@ class ViewerCard extends Component {
 							{this.props.card.description}
 						</Typography>
 						
+						{facultyOnly}
 						
 						<ViewerSteps 
 							card={this.props.card}

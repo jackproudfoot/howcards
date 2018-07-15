@@ -13,7 +13,8 @@ router.post('/card', (req, res, next) => {
 		owner: req.body.id,
 		images: 0,
 		steps: [],
-		approved: 3
+		approved: 3,
+		isFaculty: false
 	});
 	
 	newCard.save(function(err, card) {
@@ -32,7 +33,8 @@ router.post('/deck', (req, res, next) => {
 		description: "",
 		owner: req.body.id,
 		cards: [],
-		approved: 3
+		approved: 3,
+		isFaculty: false
 	})
 	
 	newDeck.save(function(err, deck) {

@@ -16,6 +16,8 @@ import Slide from '@material-ui/core/Slide';
 
 import ClearIcon from '@material-ui/icons/Clear'
 import AddIcon from '@material-ui/icons/Add'
+import LeftIcon from '@material-ui/icons/KeyboardArrowLeft'
+import RightIcon from '@material-ui/icons/KeyboardArrowRight'
 
 const styles = theme => ({
 	paper: {	
@@ -33,14 +35,15 @@ const styles = theme => ({
 });
 
 class BoardCard extends Component{
-	state = {showOption: 0}
 	
-	showDelete = () => {
-		if (this.props.deckEditor) this.setState({ showOption: 1 })
+	moveCardForward = () => {
+		console.log(this.props.index)
+		this.props.moveCardForward(this.props.index)
 	}
 	
-	hideDelete = () => {
-		if (this.props.deckEditor) this.setState({ showOption: 0 })
+	moveCardBack = () => {
+		console.log(this.props.index)
+		this.props.moveCardBack(this.props.index)
 	}
 	
 	addCard = () => {
@@ -53,14 +56,38 @@ class BoardCard extends Component{
 	
 	render() {
 		var cardOption;
-		if (this.props.deckEditor && this.state.showOption === 1) {
+		if (this.props.deckEditor) {
 			if (this.props.removeCard !== undefined) {
 				cardOption = 
-				<Tooltip title="Remove Card" placement="right">
-					<IconButton aria-label="Remove Card" onClick={this.removeCard}>
-						<ClearIcon />
-					</IconButton>
-				</Tooltip>;
+					<Grid justify="center" alignItems="center" container spacing={8}>
+						<Grid item xs={3} align="right">
+							<Tooltip title="Move Card Forward">
+								<IconButton aria-label="Move Card Forward" onClick={this.moveCardForward} disabled={this.props.index === 0}>
+									<LeftIcon />
+								</IconButton>
+							</Tooltip>
+						</Grid>
+						
+						<Grid item xs={3} align="center">
+							{this.props.index+1}
+						</Grid>
+			
+						<Grid item xs={3} align="left">
+							<Tooltip title="Move Card Back">
+								<IconButton aria-label="Move Card Back" onClick={this.moveCardBack}>
+									<RightIcon />
+								</IconButton>
+							</Tooltip>
+						</Grid>
+						
+						<Grid item xs={3} align="center">
+							<Tooltip title="Remove Card" >
+								<IconButton aria-label="Remove Card" onClick={this.removeCard}>
+									<ClearIcon />
+								</IconButton>
+							</Tooltip>
+						</Grid>
+		</Grid>
 			}
 			else if (this.props.addCard !== undefined) {
 				cardOption = 
@@ -73,23 +100,29 @@ class BoardCard extends Component{
 			
 		}
 		
+		var facultyOnly;
+		if (this.props.deckEditor && this.props.data.isFaculty) {
+			facultyOnly = (
+				<Typography variant="caption">
+					This card can only be viewed by faculty.
+				</Typography>
+			)
+		}
+		
 		var content = <Slide direction="down" in={true} mountOnEnter unmountOnExit>
-				<Paper className={this.props.classes.paper} onMouseEnter={this.showDelete} onMouseLeave={this.hideDelete}>
-					<Grid container spacing={8}>
-						<Grid item xs>
-							<Typography className={this.props.classes.howto} color="textSecondary">
-								How to
-							</Typography>
-						</Grid>
-						<Grid item xs={2}>
-							<div>{cardOption}</div>
-						</Grid>
-					
-					</Grid>
+				<Paper className={this.props.classes.paper}>
+					<Typography className={this.props.classes.howto} color="textSecondary">
+						How to
+					</Typography>
+		
 					<Typography variant="headline" component="h2">
 						{this.props.data.title}
-						</Typography>
+					</Typography>
 				
+					{facultyOnly}
+				
+					{cardOption}
+							
 				</Paper>
 			</Slide>;
 		

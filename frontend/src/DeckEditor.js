@@ -19,6 +19,18 @@ import Board from './Board'
 
 import EditorSaveButton from './EditorSaveButton'
 
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+
+import Button from '@material-ui/core/Button'
+
+import Tooltip from '@material-ui/core/Tooltip'
+import IconButton from '@material-ui/core/IconButton'
+import TrashIcon from '@material-ui/icons/Delete'
+
 
 const styles = theme => ({
 	root: {
@@ -56,7 +68,9 @@ class DeckViewer extends Component {
 			cards: []
 		},
 		saved: true,
-		fetched: false
+		fetched: false,
+		isFaculty: false,
+		delete: false
 	}
 	
 	changeTitle = (e) => {
@@ -73,6 +87,7 @@ class DeckViewer extends Component {
 	
 	addCard = (index) => {
 		var newDeck = this.state.deck;
+		newDeck.isFaculty = newDeck.isFaculty || this.state.cards[index].isFaculty;
 		newDeck.cards.push(this.state.cards[index]);
 		var newCards = this.state.cards;
 		newCards.splice(index, 1);
@@ -86,11 +101,50 @@ class DeckViewer extends Component {
 		var newDeck = this.state.deck;
 		newDeck.cards.splice(index, 1)
 		
+		for (var i = 0; i < newDeck.cards.length; i++) {
+			if (newDeck.cards[i].isFaculty) {
+				newDeck.isFaculty = true;
+			}
+			else if (i === newDeck.cards.length - 1) {
+				newDeck.isFaculty = false;
+			}
+		}
+		
 		this.setState({ deck: newDeck, cards: newCards, saved: false });
+	}
+	
+	moveCardForward = (index) => {
+		if (index > 0) {
+			var newCards = this.state.deck.cards;
+			
+			var tempCard = newCards[index-1];
+			newCards[index-1] = newCards[index];
+			newCards[index] = tempCard;
+			
+			var newDeck = this.state.deck;
+			newDeck.cards = newCards;
+			this.setState({ deck: newDeck, saved: false })
+		}
+	}
+	
+	moveCardBack = (index) => {
+		if (index+1 < this.state.deck.cards.length) {
+			var newCards = this.state.deck.cards;
+			
+			var tempCard = newCards[index+1];
+			newCards[index+1] = newCards[index];
+			newCards[index] = tempCard;
+			
+			var newDeck = this.state.deck;
+			newDeck.cards = newCards;
+			this.setState({ deck: newDeck, saved: false })
+		}
 	}
 	
 	save = () => {
 		if(this.props.user === undefined) window.location='/';
+		
+		console.log(this.state.deck.isFaculty)
 		
 		const data = new FormData();
 		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
@@ -111,10 +165,61 @@ class DeckViewer extends Component {
         .then(deck => this.setState({ deck: deck, fetched: true }));
   	  	fetch('/api/board')
         .then(res => res.json())
-        .then(cards => this.setState({ cards }));
+        .then(cards => {
+			var newCards = [];
+			var showFaculty = false;
+			if (this.props.user !== undefined) {
+				var atIndex = this.props.user.email.indexOf('@');
+			
+				if ((isNaN(parseInt(this.props.user.email.slice(atIndex - 2, atIndex), 10)) && this.props.user.email.slice(atIndex) === '@pingry.org') || this.props.user.admin || this.props.user.owner) {
+					showFaculty = true;
+				}
+			}
+		
+			if (showFaculty) {
+				newCards = cards;
+			}
+			else {
+				for (var i = 0; i < cards.length; i++) {
+					if (!cards[i].isFaculty) {
+						newCards.push(cards[i])
+					}
+				}
+			}
+			
+        	this.setState({ cards: newCards })
+        });
+	}
+	
+	deleteDeck = () => {
+		this.setState({delete: true})
+	}
+	
+	cancelDelete = () => {
+		this.setState({delete: false})
+	}
+	
+	handleDelete = () => {
+		this.setState({delete: false})
+		const data = new FormData();
+		data.append('token', JSON.parse(sessionStorage.getItem('user')).tokenId);
+		fetch('/api/deck/delete/'+this.state.deck._id, {
+  	  		method: "POST",
+			body: data
+  	  	})
+		.then(res => {window.location="/"});
 	}
 	
 	render() {
+		var facultyOnly;
+		if (this.state.deck.isFaculty) {
+			facultyOnly = (
+				<Typography variant="caption">
+					This deck can only be viewed by faculty.
+				</Typography>
+			)
+		}
+		
 		var redirect;
 		if (this.state.fetched && this.props.user === undefined) {
 			redirect = 
@@ -122,7 +227,7 @@ class DeckViewer extends Component {
 				<Redirect to={"/deck/"+ this.props.match.params.id} />
 			)} />;
 		}
-		else if (this.state.fetched && (this.props.user.id !== this.state.deck.owner && this.props.user.moderator === false)) {
+		else if (this.state.fetched && (this.props.user._id !== this.state.deck.owner && this.props.user.moderator === false)) {
 			redirect = 
 			<Route exact path={"/edit/d/" + this.props.match.params.id} render={() => (
 				<Redirect to={"/deck/"+ this.props.match.params.id} />
@@ -153,6 +258,28 @@ class DeckViewer extends Component {
 			<div className={this.props.classes.root}>
 			{redirect}
 				
+			<Dialog
+				open={this.state.delete}
+				onClose={this.cancelDelete}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">{"Delete Card?"}</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						Are you sure you want to delete this deck? This action cannot be undone.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={this.cancelDelete} color="primary">
+						Cancel
+					</Button>
+					<Button onClick={this.handleDelete} color="primary" autoFocus>
+						Delete
+					</Button>
+				</DialogActions>
+			</Dialog>
+				
 				<Grid justify="center" container spacing={8}>
 					<Grid item xs={this.props.width}>
 						<Paper elevation={4} className={this.props.classes.title}>
@@ -177,15 +304,27 @@ class DeckViewer extends Component {
 								fullWidth
 								margin="normal"
 							/>
+								
+							{facultyOnly}
+							
+							<Grid container justify="flex-end" alignItems="center" spacing={0}>
+								<Grid item xs={1}>
+									<Tooltip title="Delete Deck" placement="right">
+										<IconButton onClick={this.deleteDeck}>
+											<TrashIcon />
+										</IconButton>
+									</Tooltip>
+								</Grid>
+							</Grid>
 						</Paper>
 					</Grid>
 				</Grid>
 				
-				<Board user={this.props.user} cards={this.state.deck.cards} deckEditor={true} removeCard={this.removeCard}/>
+				<Board user={this.props.user} cards={this.state.deck.cards} deckEditor={true} removeCard={this.removeCard} moveCardForward={this.moveCardForward} moveCardBack={this.moveCardBack}/>
 								
 				<Divider />
 								
-				<Board user={this.props.user} cards={addCards} deckEditor={true} addCard={this.addCard}/>
+				<Board user={this.props.user} cards={addCards} search={true} deckEditor={true} addCard={this.addCard}/>
 				
 				<div className={this.props.classes.fab}>
 					<EditorSaveButton deck={this.state.deck} saved={this.state.saved} handleSave={this.save}/>

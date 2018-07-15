@@ -31,7 +31,6 @@ const styles = theme => ({
 function DeckBoardCard(props) {
 	const { classes } = props;
 	
-	console.log(props.data._id)
 	
 	return (
 		<Link style={{ color: "white", textDecoration: 'none' }} to={'/deck/' + props.data._id}>

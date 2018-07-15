@@ -109,6 +109,7 @@ class Editor extends Component {
 				{approvalMessage}
 				
 				<EditorCard 
+					user={this.props.user}
 					card={this.state.card} 
 					width={this.props.width}
 					selected={this.state.selected} 

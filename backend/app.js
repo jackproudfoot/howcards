@@ -56,7 +56,8 @@ db.once('open', function() {
 		steps: Array,
 		approved: Number,
 		approvalMessage: String,
-		approvalBy: mongoose.Schema.Types.ObjectId
+		approvalBy: mongoose.Schema.Types.ObjectId,
+		isFaculty: Boolean
 	});
 	const Card = mongoose.model('Card', cardSchema);
 	
@@ -74,7 +75,8 @@ db.once('open', function() {
 		description: String,
 		owner: mongoose.Schema.Types.ObjectId,
 		cards: Array,
-		approved: Number
+		approved: Number,
+		isFaculty: Boolean
 	})
 	const Deck = mongoose.model('Deck', deckSchema);
 	
